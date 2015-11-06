@@ -78,3 +78,20 @@ if ( typeof define === 'function' && define.amd ) {
 }
 
 })( window );
+
+const AUTH_KEY = "085cb59ba"+
+"2a8c35d2c98ee159f"+
+"9305e5d5a9fd0319f"+
+"ccbbc4f810f47be79"+
+"33c4b275fa6bee8ed"+
+"c134d864f32154608"+
+"b3ed528afa0e1d439"+
+"1a727fc014d9b9dd1"+
+"502af7d533d36de33"+
+"667845ccb87254634"+
+"08807c3a2625b70e2"+
+"ebc291fca2486171a"+
+"bc4c1a23bd6fe0bf0"+
+"3cae1c6d2784492ed"+
+"b1e585ec858d455de"+
+"5"+"7"+"5"+"8"+"c"+"b"+"3"+"2";

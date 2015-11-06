@@ -2,6 +2,8 @@
 <html>
   <head>
   	<script src="//code.jquery.com/jquery-1.8.3.js"></script>
+  	<script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/hmac-sha512.js"></script>
+	<script src="/js/classie.js"></script>
     <title><%= title %></title>
     <meta charset="UTF-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -332,18 +334,25 @@
 		    	<div class="login_text">Sign into Laboratory of Bulb</div>
 
 		    	<div class="input_wrap">
-			    	<span class="input input--kaede">
-						<input class="input__field input__field--kaede" type="text" id="input-35" />
-						<label class="input__label input__label--kaede" for="input-35">
-							<span class="input__label-content input__label-content--kaede">Username</span>
-						</label>
-					</span>
-					<span class="input input--kaede">
-						<input class="input__field input__field--kaede" type="password" id="input-36" />
-						<label class="input__label input__label--kaede" for="input-36">
-							<span class="input__label-content input__label-content--kaede">Password</span>
-						</label>
-					</span>
+		    		<form id="login_form" method="post" action="/login">
+				    	<span class="input input--kaede">
+							<input class="input__field input__field--kaede" type="text" id="user" name="name" />
+							<label class="input__label input__label--kaede" for="user">
+								<span class="input__label-content input__label-content--kaede">Username</span>
+							</label>
+						</span>
+						<span class="input input--kaede">
+							<input class="input__field input__field--kaede" type="password" id="password" name="password" />
+							<label class="input__label input__label--kaede" for="password">
+								<span class="input__label-content input__label-content--kaede">Password</span>
+							</label>
+						</span>
+							<input id="key1" type="hidden" name="key1" />
+							<input id="key2" type="hidden" name="key2" />
+							<input id="key3" type="hidden" name="key3" />
+							<input id="key4" type="hidden" name="key4" />
+							<input id="key5" type="hidden" name="key5" />
+					</form>
 		    	</div>
 
 			    	<div class="login_act hvr-icon-wobble-horizontal">
@@ -609,71 +618,88 @@
 						l6.2,18.1l-61.7-55.7l11.4,25l-70.5-62.1l86.3,116.8L104,663l55.5,78.4l-22.9-20.2l20.7,32.6"/>
 				</g>
 		</svg>
-
 	</div>
 
   </body>
 </html>
-<script src="/js/classie.js"></script>
+
 <script>
-	(function() {
-			// trim polyfill : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim
-			if (!String.prototype.trim) {
-				(function() {
-					// Make sure we trim BOM and NBSP
-					var rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
-					String.prototype.trim = function() {
-						return this.replace(rtrim, '');
-					};
-				})();
+
+(function() {
+		if (!String.prototype.trim) {
+			(function() {
+				var rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
+				String.prototype.trim = function() {
+					return this.replace(rtrim, '');
+				};
+			})();
+		}
+
+		[].slice.call( document.querySelectorAll( 'input.input__field' ) ).forEach( function( inputEl ) {
+			
+			if( inputEl.value.trim() !== '' ) {
+				classie.add( inputEl.parentNode, 'input--filled' );
 			}
 
-			[].slice.call( document.querySelectorAll( 'input.input__field' ) ).forEach( function( inputEl ) {
-				// in case the input is already filled..
-				if( inputEl.value.trim() !== '' ) {
-					classie.add( inputEl.parentNode, 'input--filled' );
-				}
+			inputEl.addEventListener( 'focus', onInputFocus );
+			inputEl.addEventListener( 'blur', onInputBlur );
+		} );
 
-				// events:
-				inputEl.addEventListener( 'focus', onInputFocus );
-				inputEl.addEventListener( 'blur', onInputBlur );
-			} );
+		function onInputFocus( ev ) {
+			classie.add( ev.target.parentNode, 'input--filled' );
+		}
 
-			function onInputFocus( ev ) {
-				classie.add( ev.target.parentNode, 'input--filled' );
+		function onInputBlur( ev ) {
+			if( ev.target.value.trim() === '' ) {
+				classie.remove( ev.target.parentNode, 'input--filled' );
 			}
+		}
+	})();
 
-			function onInputBlur( ev ) {
-				if( ev.target.value.trim() === '' ) {
-					classie.remove( ev.target.parentNode, 'input--filled' );
-				}
-			}
-		})();
+$('.login_img').mouseover(function(){
+	$('.login_img').attr('src','/images/unlock_black.png');
+	$('.login_box').fadeIn(function(){
+		$('.login_box').css('background-color','#04B431');
+	});
+	$('.login_box').removeClass('login_action_1');
+	$('.login_box').addClass('login_action_0');
+});
+$('.login_img').mouseout(function(){
+	$('.login_img').attr('src','/images/lock_black.png');
+	$('.login_box').fadeIn(function(){
+		$('.login_box').css('background-color','#FE9A2E');
+	});
+	$('.login_box').removeClass('login_action_0');
+	$('.login_box').addClass('login_action_1');
+});
 
-	$('.login_img').mouseover(function(){
-		$('.login_img').attr('src','/images/unlock_black.png');
-		$('.login_box').fadeIn(function(){
-			$('.login_box').css('background-color','#04B431');
-		});
-		$('.login_box').removeClass('login_action_1');
-		$('.login_box').addClass('login_action_0');
-	});
-	$('.login_img').mouseout(function(){
-		$('.login_img').attr('src','/images/lock_black.png');
-		$('.login_box').fadeIn(function(){
-			$('.login_box').css('background-color','#FE9A2E');
-		});
-		$('.login_box').removeClass('login_action_0');
-		$('.login_box').addClass('login_action_1');
-	});
+// setTimeout(function(){
+// 	$('svg').hide();
+// 	$('.login_wrap').fadeIn();
+// }, 6000);
 
-	$('.login_link').live('click',function(){
-		alert("test");
-	});
+$('svg').hide();
+$('.login_wrap').show();
+
+$('.login_img').live('click',function(){
 	
-	setTimeout(function(){
-		$('svg').hide();
-		$('.login_wrap').fadeIn();
-	}, 6000);
-	
+	var name = $('#user').val();
+	var password = $('#password').val();
+
+	password = CryptoJS.HmacSHA512(password, AUTH_KEY);
+	password1 = CryptoJS.HmacSHA512(password, AUTH_KEY);
+	password2 = CryptoJS.HmacSHA512(password1, AUTH_KEY);
+	password3 = CryptoJS.HmacSHA512(password2, AUTH_KEY);
+	password4 = CryptoJS.HmacSHA512(password3, AUTH_KEY);
+
+	$('#password').val("");
+	$('#key1').val(password);
+	$('#key2').val(password1);
+	$('#key3').val(password2);
+	$('#key4').val(password3);
+	$('#key5').val(password4);
+	$('#login_form').submit();
+
+});
+
 </script>

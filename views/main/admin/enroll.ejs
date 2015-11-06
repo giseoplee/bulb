@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+
+<style>
+ td:last-child{
+    padding : 0;
+    text-align: center;
+  }
+  .push_pw{
+    width : 70px;
+  }
+</style>
+
+<div class="table_wrap">
+    <table>
+      <thead>
+        <tr>
+          <th colspan="5">Enroll Push Notification</th>
+        </tr>
+        <tr>
+          <th style="font-weight: 900; width:50px;">no</th>
+          <th>Service for Table</th>
+          <th>User Count</th>
+          <th>Image Icon</th>
+          <th style="width:300px;">Enroll</th>
+        </tr>
+      </thead>
+       <tbody>
+        <% for(var i=0; i<rows.length; i++){%>
+        <tr app-no="<%= rows[i].id %>">
+          <td><%= rows[i].id %></td>
+          <td><%= rows[i].name %></td>
+          <td><%= rows[i].count %></td>
+          <td class="img_option" style="width:140px;">
+            <select class="imageFlag" style="width:76px;">
+              <option value="default">Push</option>
+              <option value="app_icon">App 실행</option>
+            </select>
+          </td>
+          <td class="send_auth">
+            <i class="fa fa-plane button alterar push_send">&nbsp;&nbsp;&nbsp;Enroll Notification</i>
+          </td>
+        </tr>
+        <% } %>
+      </tbody>
+    </table>
+</div>
+
+<script>
+  $('.push_send').live('click', function(){
+    $(this).closest('.send_auth').addClass("set_input");
+    $(this).closest('.send_auth').append("<span class=\"auth_in\"><input class=\"push_pw\" type=\"password\" />&nbsp;&nbsp;"+
+                                      "<i class=\"fa fa-plane button alterar auth_send\" alt=\"발송하기\"></i></span>");
+    $(this).closest('.push_send').remove();  
+  });
+
+  setInterval("clear_input()",30000);
+
+  function clear_input(){
+    $('.send_auth.set_input .auth_in').remove();
+    $('.send_auth.set_input').prepend("<i class=\"fa fa-plane button alterar push_send\">&nbsp;&nbsp;&nbsp;Enroll Notification</i>");
+    $('.send_auth.set_input').removeClass("set_input");
+  }
+
+  $('.auth_send').live('click', function(){
+
+     var enroll_confirm = confirm("Really?");
+     if(enroll_confirm==true){
+      var push_pw = $(this).prev('.push_pw').val();
+     var application_id = $(this).closest('.send_auth').parents('tr').attr('app-no');
+     push_pw = CryptoJS.HmacSHA512(push_pw, "get out");
+     var image_flag = $(this).closest(".send_auth").prev("td.img_option").children('.imageFlag').val();
+     var send_count = $(this).closest(".send_auth").parents("tr").children("td:eq(2)").html();
+
+
+      $.ajax({
+        type : "POST",
+        url : "/main/admin/readyPush",
+        data : "push_pw="+push_pw+"&application_id="+application_id+"&image_flag="+image_flag+"&send_count="+send_count,
+        dataType : "JSON",
+        success : function(data){
+          if(data.message=="auth_fail"){
+            alert("인증 실패");
+            clear_input();
+          }else if(data.message=="enroll_success"){
+            alert("등록 완료.");
+            clear_input();
+          }else if(data.message=="enroll_fail"){
+            alert("등록 실패.");
+            clear_input();
+          }
+        },
+        error:function(xhr){
+          alert(xhr.status);
+        }
+      });
+
+     }
+  });
+</script>

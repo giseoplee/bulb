@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+
+<style>
+.notification_description{
+  width: 400px;
+  height : 40px;
+  margin-top: 15px;
+}
+.notification_title{
+  width: 200px;
+  height : 40px;
+  margin-top: 15px;
+}
+.url{
+  width : 200px;
+}
+.param1, .param2{
+  width : 35px;
+}
+</style>
+
+
+<div class="table_wrap">
+    <table>
+      <thead>
+        <tr>
+          <th colspan="10">Send Push Notification</th>
+        </tr>
+        <tr>
+          <th style="font-weight: 900; width:25px;">no</th>
+          <th style="width:170px;">Table for Application</th>
+          <th style="width:130px;">Send Count</th>
+          <th style="width:120px;">Image Icon</th>
+          <th style="width:250px;">Title</th>
+          <th>Description</th>
+          <th style="width:260px;">Url</th>
+          <th style="width:60px;">Param1</th>
+          <th style="width:60px;">Param2</th>
+          <th style="width:55px;"></th>
+        </tr>
+      </thead>
+       <tbody>
+        <% for(var i=0; i<rows.length; i++){%>
+        <tr send-no="<%= rows[i].id %>">
+            <td><%= rows[i].id %></td>
+            <td><%= rows[i].name %></td>
+            <td><%= rows[i].send_count %></td>
+            <td>
+              <%if(rows[i].image_flag==0){  %>
+              <span> Push </span>
+              <%}else if(rows[i].image_flag==1){%>
+              <span> App 실행 </span>
+              <%}%>
+            </td>
+            <td>
+              <%if(!rows[i].title){  %>
+              <span> <textarea class="notification_title" name="title"></textarea> </span>
+              <%}else{%>
+              <span><%= rows[i].title %></span>
+              <%}%>
+            </td>
+            <td>
+              <%if(!rows[i].description){%>
+              <span><textarea class="notification_description" name="description"></textarea> </span>
+               <%}else{%>
+              <span><%= rows[i].description %></span>
+              <%}%>
+            </td>
+            <td>
+              <%if(!rows[i].url){%>
+              <span><input class="url" name="url" /> </span>
+               <%}else{%>
+              <span><%= rows[i].url %></span>
+              <%}%>
+            </td>
+             <td>
+              <%if(!rows[i].param1){%>
+              <span><input class="param1" name="param1" /> </span>
+               <%}else{%>
+              <span><%= rows[i].param1 %></span>
+              <%}%>
+            </td>
+             <td>
+              <%if(!rows[i].param2){%>
+              <span><input class="param2" name="param2" /> </span>
+               <%}else{%>
+              <span><%= rows[i].param2 %></span>
+              <%}%>
+            </td>
+            <td class="function">
+              <%if(rows[i].title&&rows[i].description&&rows[i].url&&rows[i].param1&&rows[i].param2){%>
+              <i class="fa fa-pencil button alterar notification_change"></i>
+              <%}else{%>
+              <i class="fa fa-pencil button alterar notification_edit"></i>
+              <%}%>
+              <i class="fa fa-plane button alterar notification_send"></i>
+            </td>
+        </tr>
+        <% } %>
+      </tbody>
+    </table>
+</div>
+
+<script>
+
+  
+
+$(".notification_edit").live("click", function(){
+
+      var edit_confirm = confirm("변경하시겠습니까 ?");
+
+      if(edit_confirm==true){
+        var header_width = $('#header').width();
+        var no = $(this).parents("tr").attr('send-no');
+        var title = $(this).parents("tr").children('td:eq(4)').children('span').children('.notification_title').val();
+        var description = $(this).parents("tr").children('td:eq(5)').children('span').children('.notification_description').val();
+        var url = $(this).parents("tr").children('td:eq(6)').children('span').children('.url').val();
+        var param1 = $(this).parents("tr").children('td:eq(7)').children('span').children('.param1').val();
+        var param2 = $(this).parents("tr").children('td:eq(8)').children('span').children('.param2').val();
+
+        if(title.length > 255){
+          alert("제목이 255자가 넘어갑니다. 텍스트 길이를 줄여주세요.");
+        }else if(description.length > 255){
+          alert("내용이 255자가 넘어갑니다. 텍스트 길이를 줄여주세요.");
+        }else if(url.length > 50){
+          alert("인자1의 내용이 50자가 넘어갑니다. 텍스트 길이를 줄여주세요.");
+        }else if(param1.length > 50){
+          alert("인자2의 내용이 50자가 넘어갑니다. 텍스트 길이를 줄여주세요.");
+        }else if(param2.length > 50){
+          alert("인자3의 내용이 50자가 넘어갑니다. 텍스트 길이를 줄여주세요.");
+        }else{
+          $.ajax({
+            type : "POST",
+            url : "/main/admin/notificationEdit",
+            data : "no="+no+"&title="+title+"&description="+description+"&url="+url+"&param1="+param1+"&param2="+param2,
+            success : function(data){
+              if(data.message=="success"){
+                alert("Good.");
+                $('#content').hide().load("main/admin/send", function(){
+                  $('#content').show();
+                  $('#content').height('100%');
+                  $('#content').width((header_width-232));
+                });  
+              }else{
+                alert("Fail.");
+              }
+            }
+          });
+        }
+      }
+});
+
+$(".notification_change").live("click", function(){
+
+  var title = $(this).parents("tr").children('td:eq(4)').children('span').html();
+  var description = $(this).parents("tr").children('td:eq(5)').children('span').html();
+  var url = $(this).parents("tr").children('td:eq(6)').children('span').html();
+  var param1 = $(this).parents("tr").children('td:eq(7)').children('span').html();
+  var param2 = $(this).parents("tr").children('td:eq(8)').children('span').html();
+
+  $(this).parents("tr").children('td:eq(4)').children('span').html("");
+  $(this).parents("tr").children('td:eq(5)').children('span').html("");
+  $(this).parents("tr").children('td:eq(6)').children('span').html("");
+  $(this).parents("tr").children('td:eq(7)').children('span').html("");
+  $(this).parents("tr").children('td:eq(8)').children('span').html("");
+
+  var title_textarea = "<textarea class=\"notification_title\" name=\"title\"></textarea>";
+  var description_textarea = "<textarea class=\"notification_description\" name=\"description\"></textarea>";
+  var url_input = "<input class=\"url\" name=\"url\" />";
+  var param1_input = "<input class=\"param1\" name=\"param1\" />";
+  var param2_input= "<input class=\"param2\" name=\"param2\" />";
+
+  $(this).parents("tr").children('td:eq(4)').children('span').prepend(title_textarea);
+  $(this).parents("tr").children('td:eq(5)').children('span').prepend(description_textarea);
+  $(this).parents("tr").children('td:eq(6)').children('span').prepend(url_input);
+  $(this).parents("tr").children('td:eq(7)').children('span').prepend(param1_input);
+  $(this).parents("tr").children('td:eq(8)').children('span').prepend(param2_input);
+  $(this).closest('.notification_change').addClass('notification_edit');
+  $(this).closest('.notification_change').removeClass('notification_change');
+
+});
+
+$(".notification_send").live("click",function(){
+
+  var send_confirm = confirm("Really?");
+
+  if(send_confirm==true){
+    var no = $(this).parents("tr").attr('send-no');
+    $.ajax({
+      type : "POST",
+      url : "/main/admin/notificationSend",
+      data : "no="+no,
+      success : function(data){
+        if(data.message=="send_all_complete"){
+          alert("Complete.");
+        }
+      }
+    });  
+  }
+});
+</script>
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+
+<style>
+ td:last-child{
+    padding : 0;
+    text-align: center;
+  }
+  .push_pw{
+    width : 70px;
+  }
+</style>
+
+<div class="table_wrap">
+    <table>
+      <thead>
+        <tr>
+          <th colspan="5">Send Push Notification</th>
+        </tr>
+        <tr>
+          <th style="font-weight: 900; width:50px;">no</th>
+          <th>Service for Table</th>
+          <th>User Count</th>
+          <th>Image Set</th>
+          <th style="width:300px;">Enroll</th>
+        </tr>
+      </thead>
+       <tbody>
+        <% for(var i=0; i<rows.length; i++){%>
+        <tr app-no="<%= rows[i].id %>">
+          <td><%= rows[i].id %></td>
+          <td><%= rows[i].name %></td>
+          <td><%= rows[i].count %></td>
+          <td style="width:140px;">
+            <select class="imageFlag" style="width:100px;">
+              <option>1</option>
+              <option>2</option>
+            </select>
+          </td>
+          <td class="send_auth">
+            <i class="fa fa-plane button alterar push_send">&nbsp;&nbsp;&nbsp;Enroll Notification</i>
+          </td>
+        </tr>
+        <% } %>
+      </tbody>
+    </table>
+</div>
+
+<script>
+  $('.push_send').live('click', function(){
+    $(this).closest('.send_auth').addClass("set_input");
+    $(this).closest('.send_auth').append("<span class=\"auth_in\"><input class=\"push_pw\" type=\"password\" />&nbsp;&nbsp;"+
+                                      "<i class=\"fa fa-plane button alterar auth_send\" alt=\"발송하기\"></i></span>");
+    $(this).closest('.push_send').remove();  
+  });
+
+  setInterval("clear_input()",30000);
+
+  function clear_input(){
+    $('.send_auth.set_input .auth_in').remove();
+    $('.send_auth.set_input').prepend("<i class=\"fa fa-plane button alterar push_send\">&nbsp;&nbsp;&nbsp;Enroll Notification</i>");
+    $('.send_auth.set_input').removeClass("set_input");
+  }
+
+  $('.auth_send').live('click', function(){
+
+      // var push_pw = $(this).prev('.push_pw').val();
+      // var application_id = $(this).closest('.send_auth').parents('tr').attr('app-no');
+      // push_pw = CryptoJS.HmacSHA512(push_pw, "get out");
+      // $(this).parents('td > form > input[name=push_pw]').val(push_pw);
+      // console.log($(this).parents('span').parents('td').siblings('td > form'));
+      // var form = $('form').serialize();
+
+      //$('.upload_data').ajaxSubmit();
+
+      // $('.upload_data').submit(function(){
+      //   $(this).ajaxSubmit({
+      //     error : function(xhr){
+      //       console.log(xhr.status);
+      //     },
+      //     success : function(data){
+      //       console.log(data);
+      //     }
+      //   });
+      // });
+      
+
+
+      var form = $('form')[application_id-1];
+      var formData = new FormData(form);
+      //formData.pushImage = $("input[name=pushImage]")[application_id-1].files[0];
+      formData.append("pushImage",$("input[name=pushImage]")[application_id-1].files[0]);
+      //var temp = $("input[name=pushImage]")[application_id-1].files[0];
+
+      // $(this).ajaxSubmit({
+      //   error : function(xhr){
+      //     status('Error :'+xhr.status);
+      //   },
+      //   success: function(data){
+      //     console.log(data)
+      //   }
+      // });
+   
+      
+      // console.log(push_pw);
+      // console.log(application_id);
+      // console.log(formData);
+      //console.log(temp);
+      // console.log(form);
+
+      $.ajax({
+        type : "POST",
+        url : "/main/admin/readyPush",
+        cache : false,
+        async : false,
+        processData : false,
+        contentType : false,
+        enctype: 'multipart/form-data',
+        
+        data : form,//"push_pw="+push_pw+"&application_id="+application_id,
+        dataType : "JSON",
+        success : function(data){
+          console.log(data);
+        },
+        error:function(xhr){
+          console.log(xhr.status);
+        }
+      });
+
+      // fs.readFile(req.files.pushImage.path, function(error, data){
+    //   var path = __dirname+"public/images/notification/"+req.files.pushImage.name;
+    //   fs.writeFile(path, data, function(error){
+    //     if(error==null){
+    //       res.status(200).json(error);
+    //     }else{
+    //       res.status(200).json({"message" : "success"});
+    //     }
+    //   });
+    // });
+  });
+</script>
