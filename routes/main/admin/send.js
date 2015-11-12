@@ -15,7 +15,7 @@ router.get('/', function(req, res, next) {
   if(!req.session.authorized){
     res.redirect("/");
   }else{
-    var query = "select push.id, app.name, push.send_count, push.image_flag, push.title, push.description, push.url, push.param1, push.param2 from notifications as push inner join applications as app on app.id=push.application_id order by id desc;";
+    var query = "select push.id, app.name, push.send_count, push.image_flag, push.checked, push.title, push.description, push.url, push.param1, push.param2 from notifications as push inner join applications as app on app.id=push.application_id order by id desc;";
     connection.query(query, function(error, cursor){
       if(error==null){
         res.render('main/admin/send', {rows : cursor});           

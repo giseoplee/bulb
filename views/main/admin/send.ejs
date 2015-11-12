@@ -24,13 +24,14 @@
     <table>
       <thead>
         <tr>
-          <th colspan="10">Send Push Notification</th>
+          <th colspan="11">Send Push Notification</th>
         </tr>
         <tr>
           <th style="font-weight: 900; width:25px;">no</th>
-          <th style="width:170px;">Table for Application</th>
-          <th style="width:130px;">Send Count</th>
-          <th style="width:120px;">Image Icon</th>
+          <th style="width:165px;">Table for Database</th>
+          <th style="width:110px;">Target Cnt</th>
+          <th style="width:50px;">Icon</th>
+          <th style="width:70px;">Checked</th>
           <th style="width:250px;">Title</th>
           <th>Description</th>
           <th style="width:260px;">Url</th>
@@ -51,6 +52,9 @@
               <%}else if(rows[i].image_flag==1){%>
               <span> App 실행 </span>
               <%}%>
+            </td>
+            <td>
+              <b style="color:#31B404"><%= rows[i].checked %></b>
             </td>
             <td>
               <%if(!rows[i].title){  %>
