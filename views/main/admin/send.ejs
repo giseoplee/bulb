@@ -31,12 +31,12 @@
           <th style="width:165px;">Table for Database</th>
           <th style="width:110px;">Target Cnt</th>
           <th style="width:50px;">Icon</th>
-          <th style="width:70px;">Checked</th>
-          <th style="width:250px;">Title</th>
+          <th style="width:90px;">Checked</th>
+          <th style="width:230px;">Title</th>
           <th>Description</th>
-          <th style="width:260px;">Url</th>
-          <th style="width:60px;">Param1</th>
-          <th style="width:60px;">Param2</th>
+          <th style="width:260px;">Link</th>
+          <th style="width:60px;">Arg1</th>
+          <th style="width:60px;">Arg2</th>
           <th style="width:55px;"></th>
         </tr>
       </thead>
@@ -50,11 +50,14 @@
               <%if(rows[i].image_flag==0){  %>
               <span> Push </span>
               <%}else if(rows[i].image_flag==1){%>
-              <span> App 실행 </span>
+              <span> App </span>
               <%}%>
             </td>
             <td>
-              <b style="color:#31B404"><%= rows[i].checked %></b>
+              <div>
+               <b style="color:#31B404"><%= rows[i].clicked %></b><br />
+               <b><%= rows[i].checked %></b>
+              </div>
             </td>
             <td>
               <%if(!rows[i].title){  %>
@@ -116,11 +119,11 @@ $(".notification_edit").live("click", function(){
       if(edit_confirm==true){
         var header_width = $('#header').width();
         var no = $(this).parents("tr").attr('send-no');
-        var title = $(this).parents("tr").children('td:eq(4)').children('span').children('.notification_title').val();
-        var description = $(this).parents("tr").children('td:eq(5)').children('span').children('.notification_description').val();
-        var url = $(this).parents("tr").children('td:eq(6)').children('span').children('.url').val();
-        var param1 = $(this).parents("tr").children('td:eq(7)').children('span').children('.param1').val();
-        var param2 = $(this).parents("tr").children('td:eq(8)').children('span').children('.param2').val();
+        var title = $(this).parents("tr").children('td:eq(5)').children('span').children('.notification_title').val();
+        var description = $(this).parents("tr").children('td:eq(6)').children('span').children('.notification_description').val();
+        var url = $(this).parents("tr").children('td:eq(7)').children('span').children('.url').val();
+        var param1 = $(this).parents("tr").children('td:eq(8)').children('span').children('.param1').val();
+        var param2 = $(this).parents("tr").children('td:eq(9)').children('span').children('.param2').val();
 
         if(title.length > 255){
           alert("제목이 255자가 넘어갑니다. 텍스트 길이를 줄여주세요.");
@@ -162,11 +165,11 @@ $(".notification_change").live("click", function(){
   var param1 = $(this).parents("tr").children('td:eq(7)').children('span').html();
   var param2 = $(this).parents("tr").children('td:eq(8)').children('span').html();
 
-  $(this).parents("tr").children('td:eq(4)').children('span').html("");
   $(this).parents("tr").children('td:eq(5)').children('span').html("");
   $(this).parents("tr").children('td:eq(6)').children('span').html("");
   $(this).parents("tr").children('td:eq(7)').children('span').html("");
   $(this).parents("tr").children('td:eq(8)').children('span').html("");
+  $(this).parents("tr").children('td:eq(9)').children('span').html("");
 
   var title_textarea = "<textarea class=\"notification_title\" name=\"title\"></textarea>";
   var description_textarea = "<textarea class=\"notification_description\" name=\"description\"></textarea>";
@@ -174,11 +177,11 @@ $(".notification_change").live("click", function(){
   var param1_input = "<input class=\"param1\" name=\"param1\" />";
   var param2_input= "<input class=\"param2\" name=\"param2\" />";
 
-  $(this).parents("tr").children('td:eq(4)').children('span').prepend(title_textarea);
-  $(this).parents("tr").children('td:eq(5)').children('span').prepend(description_textarea);
-  $(this).parents("tr").children('td:eq(6)').children('span').prepend(url_input);
-  $(this).parents("tr").children('td:eq(7)').children('span').prepend(param1_input);
-  $(this).parents("tr").children('td:eq(8)').children('span').prepend(param2_input);
+  $(this).parents("tr").children('td:eq(5)').children('span').prepend(title_textarea);
+  $(this).parents("tr").children('td:eq(6)').children('span').prepend(description_textarea);
+  $(this).parents("tr").children('td:eq(7)').children('span').prepend(url_input);
+  $(this).parents("tr").children('td:eq(8)').children('span').prepend(param1_input);
+  $(this).parents("tr").children('td:eq(9)').children('span').prepend(param2_input);
   $(this).closest('.notification_change').addClass('notification_edit');
   $(this).closest('.notification_change').removeClass('notification_change');
 

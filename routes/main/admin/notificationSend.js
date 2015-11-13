@@ -29,16 +29,28 @@ router.post('/', function(req, res, next) {
           delayWhileIdle: true,
           timeToLive: 3,
           data: {
+                /* 신형 데이터
                  title: cursor[0].title,
                  description: cursor[0].description,
                  image_flag: cursor[0].image_flag,
                  url: cursor[0].url,
                  param1: cursor[0].param1,
                  param2: cursor[0].param2 
+                 */
+
+                no : "1",
+                code : "1", // 이미지 플래그 { 1 : 앱 실행 / 4 : 구글 아이콘}
+                title : cursor[0].title,
+                msg : cursor[0].description,
+                ticker : "나만의 실험실",
+                url : cursor[0].url
+
+
              }
           });
 
-        var server_api_key =  'AIzaSyBJ2X4eC4i66kTHHG8ymmC3Ffq_KDCk5kM';
+        //var server_api_key =  'AIzaSyBJ2X4eC4i66kTHHG8ymmC3Ffq_KDCk5kM'; // 신버전
+        var server_api_key =  'AIzaSyDa1JpGKQZYNvecZzUe3PEcZ4mQqAKzjv0'; // 구버전, 현재 알케미
         var sender = new gcm.Sender(server_api_key);
         var registrationIds = [], size=4;
         var token = [];
@@ -51,7 +63,9 @@ router.post('/', function(req, res, next) {
             }
             
             var success_cnt = 0;
-            var notification_cnt = token.length;
+            var notification_cnt = Math.ceil(token.length/size);
+            var sender_check = 0;
+            
             var j = 0;
 
             while(token.length > 0){
@@ -62,17 +76,22 @@ router.post('/', function(req, res, next) {
               var sendIds = new Array();
 
               for(var l=0; l<size; l++){
+                //sendIds.splice(0,size);
                 sendIds.push(registrationIds[k][l]);
+                //console.log("\n"+"발송 직전"+"\n\n"+sendIds+"\n\n");
+                console.log("\n"+"발송 전"+"\n\n"+registrationIds[k][l]+"\n\n");
 
                 if(l==(size-1)){
-
+                  console.log("\n\n 조건 발동 \n\n");
                   sender.send(message, sendIds, 4, function (error, result){
+                    
 
                     if(error==null){
-                      console.log(result);
-                      success_cnt += result.success;
-
-                      if(notification_cnt==success_cnt){
+                      console.log("\n"+"발송 된 값들"+"\n\n"+sendIds+"\n\n");
+                      console.log(result);  
+                      sender_check++;
+                      
+                      if(notification_cnt==sender_check){
                         res.status(200).json({"message" : "send_all_complete"});
                       }
                     }
