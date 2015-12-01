@@ -42,10 +42,8 @@ router.post('/', function(req, res, next) {
                 code : "1", // 이미지 플래그 { 1 : 앱 실행 / 4 : 구글 아이콘}
                 title : cursor[0].title,
                 msg : cursor[0].description,
-                ticker : "나만의 실험실",
+                ticker : "힌트받고 게임 즐기세요!",
                 url : cursor[0].url
-
-
              }
           });
 
