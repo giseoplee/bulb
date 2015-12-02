@@ -77,16 +77,16 @@ router.post('/', function(req, res, next) {
                 //sendIds.splice(0,size);
                 sendIds.push(registrationIds[k][l]);
                 //console.log("\n"+"발송 직전"+"\n\n"+sendIds+"\n\n");
-                console.log("\n"+"발송 전"+"\n\n"+registrationIds[k][l]+"\n\n");
+                //console.log("\n"+"발송 전"+"\n\n"+registrationIds[k][l]+"\n\n");
 
                 if(l==(size-1)){
-                  console.log("\n\n 조건 발동 \n\n");
+                  //console.log("\n\n 조건 발동 \n\n");
                   sender.send(message, sendIds, 4, function (error, result){
                     
 
                     if(error==null){
-                      console.log("\n"+"발송 된 값들"+"\n\n"+sendIds+"\n\n");
-                      console.log(result);  
+                      // console.log("\n"+"발송 된 값들"+"\n\n"+sendIds+"\n\n");
+                      // console.log(result);  
                       sender_check++;
                       
                       if(notification_cnt==sender_check){
