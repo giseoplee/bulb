@@ -80,15 +80,14 @@ router.post('/', function(req, res, next) {
                           // Done with batch
                           callback();
                       });
+                  },function( err )
+                  {
+                      // Log the error to console
+                      if ( err )
+                      {
+                          console.log(err);
+                      }
                   });
-                  // ,function( err )
-                  // {
-                  //     // Log the error to console
-                  //     if ( err )
-                  //     {
-                  //         console.log(err);
-                  //     }
-                  // });
 
                   // sender.send(message, sendIds, 4, function (error, result){
                     
