@@ -72,13 +72,17 @@ router.post('/', function(req, res, next) {
 
             for(var k=0; k<registrationIds.length; k++){
               var sendIds = new Array();
+              var fac = 0;
 
               for(var l=0; l<size; l++){
                 //sendIds.splice(0,size);
                 sendIds.push(registrationIds[k][l]);
                 console.log(sendIds[l]);
+                console.log(sendIds[sendIds.length-1]);
                 console.log(sendIds.length);
-                console.log("///////////////////////////////////////////////////////////////////////////////////////////");
+                fac += sendIds.length;
+                console.log(fac);
+                console.log("///////////////////////////////////////////////////////////////////////////////////////////\n");
                 //console.log("\n"+"발송 직전"+"\n\n"+sendIds+"\n\n");
                 //console.log("\n"+"발송 전"+"\n\n"+registrationIds[k][l]+"\n\n");
 
