@@ -79,6 +79,10 @@ router.post('/', function(req, res, next) {
                 sendIds.push(registrationIds[k][l]);
                 console.log(sendIds[l]);
                 console.log(sendIds[sendIds.length-1]);
+                console.log(sendIds[sendIds.length-2]);
+                console.log(sendIds[sendIds.length-3]);
+                console.log(sendIds[sendIds.length-4]);
+                console.log(sendIds[sendIds.length-5]);
                 console.log(sendIds.length);
                 fac += sendIds.length;
                 console.log(fac);
