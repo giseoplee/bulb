@@ -93,10 +93,9 @@ router.post('/', function(req, res, next) {
                     
                   // });      
       });
-        else{
+     }else{
           res.status(200).json({"message" : "send_fail"});
         }
-     }
    });
   }
 });
