@@ -71,6 +71,7 @@ router.post('/', function(req, res, next) {
                       // Assuming you already set up the sender and message
                       sender.send(message, { registrationIds: tokenBatches }, function (err, result)
                       {
+                          console.log(err);
                           console.log(result);
                           // Push failed?
                           if (err)
