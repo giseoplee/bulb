@@ -53,7 +53,7 @@ router.post('/', function(req, res, next) {
         var registrationIds = [], size=1000;
         var token = [];
 
-        connection.query("select registration_key from users where application_id=?;",[cursor[0].application_id]
+        connection.query("select registration_key from users where application_id=? limit 50000;",[cursor[0].application_id]
           ,function(error, cursor){
             console.log("반환 갯수 : "+cursor.length);
             for(var i=0; i<cursor.length; i++){
