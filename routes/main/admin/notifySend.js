@@ -69,7 +69,7 @@ router.post('/', function(req, res, next) {
                   async.each( cursor, function( tokenBatches, callback )
                   {
                       // Assuming you already set up the sender and message
-                      sender.send(message, { registrationIds: batch }, function (err, result)
+                      sender.send(message, { registrationIds: tokenBatches }, function (err, result)
                       {
                           // Push failed?
                           if (err)
