@@ -3,6 +3,7 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var mysql = require('mysql');
 var gcm = require('node-gcm');
+var async = require('async');
 var router = express.Router();
 
 var connection = mysql.createConnection({
