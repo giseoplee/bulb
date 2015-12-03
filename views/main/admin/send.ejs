@@ -195,7 +195,7 @@ $(".notification_send").live("click",function(){
     var no = $(this).parents("tr").attr('send-no');
     $.ajax({
       type : "POST",
-      url : "/main/admin/notificationSend",
+      url : "/main/admin/notifySend",
       data : "no="+no,
       success : function(data){
         if(data.message=="send_all_complete"){
