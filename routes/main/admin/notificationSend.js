@@ -50,12 +50,12 @@ router.post('/', function(req, res, next) {
         //var server_api_key =  'AIzaSyBJ2X4eC4i66kTHHG8ymmC3Ffq_KDCk5kM'; // 신버전
         var server_api_key =  'AIzaSyDa1JpGKQZYNvecZzUe3PEcZ4mQqAKzjv0'; // 구버전, 현재 알케미
         var sender = new gcm.Sender(server_api_key);
-        var registrationIds = [], size=4;
+        var registrationIds = [], size=1000;
         var token = [];
 
         connection.query("select registration_key from users where application_id=?;",[cursor[0].application_id]
           ,function(error, cursor){
-
+            console.log("반환 갯수 : "+cursor.length);
             for(var i=0; i<cursor.length; i++){
               token[i] = cursor[i].registration_key;
             }
@@ -76,24 +76,30 @@ router.post('/', function(req, res, next) {
               for(var l=0; l<size; l++){
                 //sendIds.splice(0,size);
                 sendIds.push(registrationIds[k][l]);
+                console.log(sendIds[l]);
+                console.log(sendIds[size-1]);
+                console.log("///////////////////////////////////////////////////////////////////////////////////////////");
                 //console.log("\n"+"발송 직전"+"\n\n"+sendIds+"\n\n");
                 //console.log("\n"+"발송 전"+"\n\n"+registrationIds[k][l]+"\n\n");
 
                 if(l==(size-1)){
+                  //console.log(l);
+                  //console.log(size);
+                  //sleep(2000);
                   //console.log("\n\n 조건 발동 \n\n");
-                  sender.send(message, sendIds, 4, function (error, result){
+                  // sender.send(message, sendIds, 4, function (error, result){
                     
 
-                    if(error==null){
-                      // console.log("\n"+"발송 된 값들"+"\n\n"+sendIds+"\n\n");
-                      // console.log(result);  
-                      sender_check++;
+                  //   if(error==null){
+                  //     //console.log("\n"+"발송 / 발송 reg_id = "+"\n\n"+sendIds+"\n\n");
+                  //     // console.log(result);  
+                  //     sender_check++;
                       
-                      if(notification_cnt==sender_check){
-                        res.status(200).json({"message" : "send_all_complete"});
-                      }
-                    }
-                  });      
+                  //     if(notification_cnt==sender_check){
+                  //       res.status(200).json({"message" : "send_all_complete"});
+                  //     }
+                  //   }
+                  // });      
                 }
               }
             }
