@@ -77,7 +77,8 @@ router.post('/', function(req, res, next) {
                 //sendIds.splice(0,size);
                 sendIds.push(registrationIds[k][l]);
                 console.log(sendIds[l]);
-                console.log(sendIds[size-1]);
+                console.log(size);
+                //console.log(sendIds[size-1]);
                 console.log("///////////////////////////////////////////////////////////////////////////////////////////");
                 //console.log("\n"+"발송 직전"+"\n\n"+sendIds+"\n\n");
                 //console.log("\n"+"발송 전"+"\n\n"+registrationIds[k][l]+"\n\n");
