@@ -92,10 +92,12 @@ router.post('/', function(req, res, next) {
                   // sender.send(message, sendIds, 4, function (error, result){
                     
                   // });      
-      }else{
-        res.status(200).json({"message" : "send_fail"});
-      }
-    });
+      });
+        else{
+          res.status(200).json({"message" : "send_fail"});
+        }
+     }
+   });
   }
 });
 
