@@ -55,60 +55,42 @@ router.post('/', function(req, res, next) {
 
         connection.query("select registration_key from users where application_id=? limit 50000;",[cursor[0].application_id]
           ,function(error, cursor){
-            console.log("반환 갯수 : "+cursor.length);
-            for(var i=0; i<cursor.length; i++){
-              token[i] = cursor[i].registration_key;
-            }
-            
-            var success_cnt = 0;
-            var notification_cnt = Math.ceil(token.length/size);
-            var sender_check = 0;
-            
-            var j = 0;
 
-            while(token.length > 0){
-              registrationIds.push(token.splice(0,size));
-            }
+                  var batchLimit = 1000;
+                  var tokenBatches = [];
 
-            for(var k=0; k<registrationIds.length; k++){
-              var sendIds = new Array();
-              var fac = 0;
+                  for(var start=0; start < cursor.length; start+=batchLimit){
+                    var sliceTokens = cursor.splice(start, start+batchLimit);
+                    tokenBatches.push(sliceTokens);
+                  }
 
-              for(var l=0; l<size; l++){
-                //sendIds.splice(0,size);
-                sendIds.push(registrationIds[k][l]);
-                console.log(sendIds[0]);
-                console.log(sendIds[1]);
-                console.log(sendIds[2]);
-                //console.log(sendIds[sendIds.length-1]);
-                //console.log(sendIds[sendIds.length-2]);
-                // console.log(sendIds[sendIds.length-3]);
-                // console.log(sendIds[sendIds.length-4]);
-                // console.log(sendIds[sendIds.length-5]);
-                console.log(sendIds.length);
-                fac += sendIds.length;
-                console.log(fac);
-                console.log("///////////////////////////////////////////////////////////////////////////////////////////\n");
-                //console.log("\n"+"발송 직전"+"\n\n"+sendIds+"\n\n");
-                //console.log("\n"+"발송 전"+"\n\n"+registrationIds[k][l]+"\n\n");
 
-                if(l==(size-1)){
-                  //console.log(l);
-                  //console.log(size);
-                  //sleep(2000);
-                  //console.log("\n\n 조건 발동 \n\n");
+                  async.each( batches, function( batch, callback )
+                  {
+                      // Assuming you already set up the sender and message
+                      sender.send(message, { registrationIds: batch }, function (err, result)
+                      {
+                          // Push failed?
+                          if (err)
+                          {
+                              // Stops executing other batches
+                              return callback(err);
+                          }
+                          // Done with batch
+                          callback();
+                      }
+                  },
+                  function( err )
+                  {
+                      // Log the error to console
+                      if ( err )
+                      {
+                          console.log(err);
+                      }
+                  });
+
                   // sender.send(message, sendIds, 4, function (error, result){
                     
-
-                  //   if(error==null){
-                  //     //console.log("\n"+"발송 / 발송 reg_id = "+"\n\n"+sendIds+"\n\n");
-                  //     // console.log(result);  
-                  //     sender_check++;
-                      
-                  //     if(notification_cnt==sender_check){
-                  //       res.status(200).json({"message" : "send_all_complete"});
-                  //     }
-                  //   }
                   // });      
                 }
               }
