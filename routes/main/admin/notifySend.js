@@ -78,7 +78,7 @@ router.post('/', function(req, res, next) {
                           }
                           // Done with batch
                           callback();
-                      }
+                      });
                   });
                   // ,function( err )
                   // {
