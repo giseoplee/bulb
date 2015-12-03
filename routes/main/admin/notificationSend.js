@@ -78,8 +78,10 @@ router.post('/', function(req, res, next) {
                 //sendIds.splice(0,size);
                 sendIds.push(registrationIds[k][l]);
                 console.log(sendIds[0]);
-                console.log(sendIds[sendIds.length-1]);
-                console.log(sendIds[sendIds.length-2]);
+                console.log(sendIds[1]);
+                console.log(sendIds[2]);
+                //console.log(sendIds[sendIds.length-1]);
+                //console.log(sendIds[sendIds.length-2]);
                 // console.log(sendIds[sendIds.length-3]);
                 // console.log(sendIds[sendIds.length-4]);
                 // console.log(sendIds[sendIds.length-5]);
