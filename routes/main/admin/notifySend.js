@@ -58,7 +58,7 @@ router.post('/', function(req, res, next) {
           ,function(error, cursor){
 
                   console.log(cursor);
-                  var batchLimit = 900;
+                  var batchLimit = 2;
                   var tokenBatches = [];
 
                   for(var start=0; start < cursor.length; start+=batchLimit){
