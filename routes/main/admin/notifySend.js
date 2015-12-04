@@ -66,6 +66,8 @@ router.post('/', function(req, res, next) {
                     tokenBatches.push(sliceTokens);
                   }
 
+                  console.log(tokenBatches);
+
                   async.each( cursor, function( tokenBatches, callback )
                   {
                       // Assuming you already set up the sender and message
