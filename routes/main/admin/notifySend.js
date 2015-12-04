@@ -4,6 +4,7 @@ var session = require('express-session');
 var mysql = require('mysql');
 var gcm = require('node-gcm');
 var async = require('async');
+//var sleep = require('sleep');
 var router = express.Router();
 
 var connection = mysql.createConnection({
@@ -54,59 +55,61 @@ router.post('/', function(req, res, next) {
         var registrationIds = [], size=1000;
         var token = [];
 
-        connection.query("select registration_key from users where application_id=? limit 50000;",[cursor[0].application_id]
+        connection.query("select registration_key from users where application_id=?;",[cursor[0].application_id]
           ,function(error, cursor){
 
-                  // console.log(cursor);
-                  // console.log("\n\n");
-
+                  var loop = cursor.length;
                   var batchLimit = 2;
                   var tokenBatches = [];
 
-                  for(var start=0; start < cursor.length; start+=batchLimit){
-                    var sliceTokens = cursor.splice(start, start+batchLimit);
+                  for(var start=0; start < loop; start+=batchLimit){
+
+                    //console.log(cursor[0]);
+                    //console.log(cursor[batchLimit-1]);
+                    var sliceTokens = cursor.splice(0, batchLimit);
                     tokenBatches.push(sliceTokens);
+
+                  }
+
+                  var sendLimit = tokenBatches.length;
+
+                  for(var i=0; i<sendLimit; i++){
+
+                    var sendIds = new Array();
+
+                    for(var j=0; j<tokenBatches[i].length; j++){
+                      sendIds.push(tokenBatches[i][j].registration_key);
+                    }
+                    
+                    console.log(sendIds); 
+
+                    sender.send(message, sendIds, 4, function (error, result){
+                      if(error==null){
+                        //console.log("\n"+"발송 / 발송 reg_id = "+"\n\n"+sendIds+"\n\n");
+                        console.log(result);  
+                        //res.status(200).json({"message" : "send_all_complete"});
+                        if(i==(sendLimit-1)){
+                          res.status(200).json({"message" : "send_all_complete"});
+                        }
+                      }else{
+                        res.status(200).json({"message" : "send_fail"});
+                      }
+                    });      
+
                   }
 
                   //console.log(tokenBatches.length);
+                  //console.log(tokenBatches[0]);
+                  
+                  //res.status(200).json({"message" : "send_all_complete"});
 
-                  async.each( cursor, function( batch, callback )
-                  {
-                      // Assuming you already set up the sender and message
-                      console.log({registrationIds : cursor});
-                      sender.send(message, { registrationIds: cursor }, function (error, result)
-                      {
-                          //console.log(error);
-                          console.log(result);
-                          // Push failed?
-                          if (error)
-                          {
-                              // Stops executing other batches
-                              return callback(error);
-                          }
-                          // Done with batch
-                          callback();
-                      });
-                  },function( error )
-                  {
-                      // Log the error to console
-                      if ( error )
-                      {
-                          console.log(error);
-                      }
-                  });
-
-                  // sender.send(message, sendIds, 4, function (error, result){
-                    
-                  // });      
-      });
-     }else{
-          res.status(200).json({"message" : "send_fail"});
-        }
-   });
-  }
-});
-
+              });
+             }else{
+                  res.status(200).json({"message" : "send_fail"});
+                }
+           });
+          }
+        });
 
 
 module.exports = router;
