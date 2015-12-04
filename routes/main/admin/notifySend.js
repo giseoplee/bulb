@@ -59,7 +59,7 @@ router.post('/', function(req, res, next) {
           ,function(error, cursor){
 
                   var loop = cursor.length;
-                  var batchLimit = 2;
+                  var batchLimit = 1000;
                   var tokenBatches = [];
 
                   for(var start=0; start < loop; start+=batchLimit){
@@ -81,7 +81,7 @@ router.post('/', function(req, res, next) {
                       sendIds.push(tokenBatches[i][j].registration_key);
                     }
                     
-                    console.log(sendIds); 
+                    //console.log(sendIds); 
 
                     sender.send(message, sendIds, 4, function (error, result){
                       if(error==null){
