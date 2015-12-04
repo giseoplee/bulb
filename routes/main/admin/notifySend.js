@@ -81,7 +81,7 @@ router.post('/', function(req, res, next) {
                       sendIds.push(tokenBatches[i][j].registration_key);
                     }
                     
-                    //console.log(sendIds); 
+                    console.log(sendIds); 
 
                     sender.send(message, sendIds, 4, function (error, result){
                       if(error==null){
