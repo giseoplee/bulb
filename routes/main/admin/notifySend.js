@@ -57,7 +57,9 @@ router.post('/', function(req, res, next) {
         connection.query("select registration_key from users where application_id=? limit 50000;",[cursor[0].application_id]
           ,function(error, cursor){
 
-                  //console.log(cursor);
+                  console.log(cursor);
+                  console.log("\n\n");
+
                   var batchLimit = 2;
                   var tokenBatches = [];
 
@@ -66,30 +68,30 @@ router.post('/', function(req, res, next) {
                     tokenBatches.push(sliceTokens);
                   }
 
-                  console.log(tokenBatches);
+                  console.log(tokenBatches.length);
 
-                  async.each( cursor, function( tokenBatches, callback )
+                  async.each( tokenBatches, function( batch, callback )
                   {
                       // Assuming you already set up the sender and message
-                      sender.send(message, { registrationIds: tokenBatches }, function (err, result)
+                      sender.send(message, { registrationIds: tokenBatches }, function (error, result)
                       {
                           console.log(err);
                           console.log(result);
                           // Push failed?
-                          if (err)
+                          if (error)
                           {
                               // Stops executing other batches
-                              return callback(err);
+                              return callback(error);
                           }
                           // Done with batch
                           callback();
                       });
-                  },function( err )
+                  },function( error )
                   {
                       // Log the error to console
-                      if ( err )
+                      if ( error )
                       {
-                          console.log(err);
+                          console.log(error);
                       }
                   });
 
