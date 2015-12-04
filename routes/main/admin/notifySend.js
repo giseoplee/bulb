@@ -65,7 +65,7 @@ router.post('/', function(req, res, next) {
 
                   for(var start=0; start < cursor.length; start+=batchLimit){
                     var sliceTokens = cursor.splice(start, start+batchLimit);
-                    tokenBatches.push(sliceTokens);
+                    //tokenBatches.push(sliceTokens);
                   }
 
                   console.log(tokenBatches.length);
@@ -73,7 +73,7 @@ router.post('/', function(req, res, next) {
                   async.each( tokenBatches, function( batch, callback )
                   {
                       // Assuming you already set up the sender and message
-                      console.log(tokenBatches);
+                      console.log({registrationIds : tokenBatches});
                       sender.send(message, { registrationIds: tokenBatches }, function (error, result)
                       {
                           console.log(registrationIds);
