@@ -76,6 +76,7 @@ router.post('/', function(req, res, next) {
                       console.log(tokenBatches);
                       sender.send(message, { registrationIds: tokenBatches }, function (error, result)
                       {
+                          console.log(registrationIds);
                           //console.log(error);
                           console.log(result);
                           // Push failed?
