@@ -65,7 +65,7 @@ router.post('/', function(req, res, next) {
 
                   for(var start=0; start < cursor.length; start+=batchLimit){
                     var sliceTokens = cursor.splice(start, start+batchLimit);
-                    //tokenBatches.push(sliceTokens);
+                    tokenBatches.push(sliceTokens);
                   }
 
                   console.log(tokenBatches.length);
@@ -76,7 +76,7 @@ router.post('/', function(req, res, next) {
                       console.log({registrationIds : tokenBatches});
                       sender.send(message, { registrationIds: tokenBatches }, function (error, result)
                       {
-                          console.log(registrationIds);
+                          console.log(tokenBatches);
                           //console.log(error);
                           console.log(result);
                           // Push failed?
