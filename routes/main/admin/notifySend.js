@@ -55,11 +55,11 @@ router.post('/', function(req, res, next) {
         var registrationIds = [], size=1000;
         var token = [];
 
-        connection.query("select registration_key from users where application_id=? limit 50;",[cursor[0].application_id]
+        connection.query("select registration_key from users where application_id=?;",[cursor[0].application_id]
           ,function(error, cursor){
 
                   var loop = cursor.length;
-                  var batchLimit = 2;
+                  var batchLimit = 1000;
                   var tokenBatches = [];
 
                   for(var start=0; start < loop; start+=batchLimit){
