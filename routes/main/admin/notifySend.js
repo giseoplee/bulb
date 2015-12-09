@@ -55,11 +55,11 @@ router.post('/', function(req, res, next) {
         var registrationIds = [], size=1000;
         var token = [];
 
-        connection.query("select registration_key from users where application_id=?;",[cursor[0].application_id]
+        connection.query("select registration_key from users where application_id=? limit 50;",[cursor[0].application_id]
           ,function(error, cursor){
 
                   var loop = cursor.length;
-                  var batchLimit = 1000;
+                  var batchLimit = 2;
                   var tokenBatches = [];
 
                   for(var start=0; start < loop; start+=batchLimit){
@@ -81,20 +81,21 @@ router.post('/', function(req, res, next) {
                       sendIds.push(tokenBatches[i][j].registration_key);
                     }
                     
-                    console.log(sendIds); 
+                    //console.log(sendIds); 
+                    Sending(sender, message, sendIds, i, batchLimit);
 
-                    sender.send(message, sendIds, 4, function (error, result){
-                      if(error==null){
-                        //console.log("\n"+"발송 / 발송 reg_id = "+"\n\n"+sendIds+"\n\n");
-                        console.log(result);  
-                        //res.status(200).json({"message" : "send_all_complete"});
-                        if(i==(sendLimit-1)){
-                          res.status(200).json({"message" : "send_all_complete"});
-                        }
-                      }else{
-                        res.status(200).json({"message" : "send_fail"});
-                      }
-                    });      
+                    // sender.send(message, sendIds, 4, function (error, result){
+                    //   if(error==null){
+                    //     //console.log("\n"+"발송 / 발송 reg_id = "+"\n\n"+sendIds+"\n\n");
+                    //     console.log(result);  
+                    //     //res.status(200).json({"message" : "send_all_complete"});
+                    //     if(i==(sendLimit-1)){
+                    //       res.status(200).json({"message" : "send_all_complete"});
+                    //     }
+                    //   }else{
+                    //     res.status(200).json({"message" : "send_fail"});
+                    //   }
+                    // });
 
                   }
 
@@ -109,7 +110,35 @@ router.post('/', function(req, res, next) {
                 }
            });
           }
-        });
+
+    function Sending(sender, message, sendIds, count, limit){
+      //console.log(message);
+      //console.log(sendIds);
+
+       sender.send(message, sendIds, 4, function (error, result){
+        if(error==null){
+          //console.log("\n"+"발송 / 발송 reg_id = "+"\n\n"+sendIds+"\n\n");
+          console.log(result);  
+          //res.status(200).json({"message" : "send_all_complete"});
+          if(count==(limit-1)){
+            res.status(200).json({"message" : "send_all_complete"});
+          }
+        }
+      });
+
+      sleep(1000);
+    }
+
+    function sleep(milliseconds) {
+      var start = new Date().getTime();
+      for (var i = 0; i < 1e7; i++) {
+        if ((new Date().getTime() - start) > milliseconds){
+          break;
+        }
+      }
+    }
+
+});
 
 
 module.exports = router;
