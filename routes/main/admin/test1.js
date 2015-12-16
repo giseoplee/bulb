@@ -75,6 +75,7 @@ router.post('/', function(req, res, next) {
             
             for(var start=0; start < loop; start+=batchLimit){
               var sliceTokens = cursor.splice(0, batchLimit);
+              console.log(sliceTokens);
               tokenBatches.push(sliceTokens);
               //console.log("발송될 토큰들 갯수 : "+tokenBatches.length);
             }
@@ -83,55 +84,37 @@ router.post('/', function(req, res, next) {
 
             var sendLimit = tokenBatches.length;
 
-            // for(var i=0; i<sendLimit; i++){
+            for(var i=0; i<sendLimit; i++){
 
-            //   var sendIds = new Array();
-            //   //console.log(sendIds);
+              var sendIds = new Array();
+              //console.log(sendIds);
 
-            //   // for(var j=0; j<tokenBatches[i].length; j++){
-            //   //   sendIds.push(tokenBatches[i][j].registration_key);
-            //   //   // console.log("배열 첫 번째 값 : "+sendIds[0]);
-            //   //   // console.log("배열 마지막 값 : "+sendIds[sendIds.length-1]);
-            //   // }
-            //   sendIds.push('APA91bHU-fp1KpAwL-m123CcCFFR_OqoT6zaIfeJR7W-idDlVpiT1AztFWagixNIAt-YcYOsKW55N16mk6axpQspMZ_k_XrFWTFtHbA1h1zjUaUH8EaB_GMI7zdcaS-UuoZfn5aX9PTF');
-            //   sendIds.push('APA91bGdU3pfYOOt_0gPkUMVROu-IH96FkFIRmcjQSX8gk1Bau1cYAF-dSpumDqQa7LgbS6h4X_NPtXP966C3cIxnwlMVsMO61c66T9cSZKttzNcAcgswszZXodhHc_Yy6x3M8DL6KqD');
-            //   sendIds.push('APA91bHAvlVM5M0OSvX3yL-IxAyMbIDB_Zuck0QRpMFwHhH6XbjS3Kh0fS51EbFjlbQqQiL-gBssyP4C45HTEre72u_Tvudgfg3Wd0vYA3UC7g58cNWjto0MzgHw8UGtRYri0bPfJxnV');
-            //   sendIds.push('APA91bGkE23mnwtvDWr4wke3J0FkFjM9LOHzj6l6zOfyw7BOUWgo8wFeHeaV2gqR5ftQ-5rtK6K4KsEBrrGdJyX4mMzKc69zUCtWsVQSgTWpwWBUimuLc9Wrh9Jl7VL5IO2DWszCwpOw');
-            //   sendIds.push('APA91bFNCfrLVJ4zPw6QUl-vgwDh7g7WFngkRlhTvOwdyyeyQRHsV24OEeip-3qmYNmUwuKfdtuE63Xh_8aSB2h5ykc1ztk5Ep3Kh-j6FRV-QZuFRdRBE-fSmm_SMmeKOCi8xqIkV180');
-            //   // console.log("배열 첫 번째 값 : "+sendIds[0]);
-            //   // console.log("배열 마지막 값 : "+sendIds[sendIds.length-1]);
-            //   console.log(sendIds);
-            //   //console.log(sendIds.length);
-            //   //console.log("1회에 발송될 갯수 : "+sendIds.length);
-
-            //   // sender.send(message, {sendIds : sendIds}, 4, function (error, result){
-            //   //   if(error==null){
-            //   //     console.log(result);  
-            //   //   }else{
-            //   //     console.log(error);
-            //   //   }
-            //   // });
-            // }
-
-            var sendIds = new Array();
-
-            sendIds.push('APA91bHU-fp1KpAwL-m123CcCFFR_OqoT6zaIfeJR7W-idDlVpiT1AztFWagixNIAt-YcYOsKW55N16mk6axpQspMZ_k_XrFWTFtHbA1h1zjUaUH8EaB_GMI7zdcaS-UuoZfn5aX9PTF');
-            sendIds.push('APA91bGdU3pfYOOt_0gPkUMVROu-IH96FkFIRmcjQSX8gk1Bau1cYAF-dSpumDqQa7LgbS6h4X_NPtXP966C3cIxnwlMVsMO61c66T9cSZKttzNcAcgswszZXodhHc_Yy6x3M8DL6KqD');
-            sendIds.push('APA91bHAvlVM5M0OSvX3yL-IxAyMbIDB_Zuck0QRpMFwHhH6XbjS3Kh0fS51EbFjlbQqQiL-gBssyP4C45HTEre72u_Tvudgfg3Wd0vYA3UC7g58cNWjto0MzgHw8UGtRYri0bPfJxnV');
-            sendIds.push('APA91bGkE23mnwtvDWr4wke3J0FkFjM9LOHzj6l6zOfyw7BOUWgo8wFeHeaV2gqR5ftQ-5rtK6K4KsEBrrGdJyX4mMzKc69zUCtWsVQSgTWpwWBUimuLc9Wrh9Jl7VL5IO2DWszCwpOw');
-            sendIds.push('APA91bFNCfrLVJ4zPw6QUl-vgwDh7g7WFngkRlhTvOwdyyeyQRHsV24OEeip-3qmYNmUwuKfdtuE63Xh_8aSB2h5ykc1ztk5Ep3Kh-j6FRV-QZuFRdRBE-fSmm_SMmeKOCi8xqIkV180');
-            // console.log("배열 첫 번째 값 : "+sendIds[0]);
-            // console.log("배열 마지막 값 : "+sendIds[sendIds.length-1]);
-            console.log(sendIds);
-
-            sender.send(message, sendIds, 4, function (error, result){
-              if(error==null){
-                console.log(result);  
-              }else{
-                console.log(error);
+              for(var j=0; j<tokenBatches[i].length; j++){
+                sendIds.push(tokenBatches[i][j].registration_key);
+                // console.log("배열 첫 번째 값 : "+sendIds[0]);
+                // console.log("배열 마지막 값 : "+sendIds[sendIds.length-1]);
               }
-            });
 
+              // sendIds.push('APA91bHU-fp1KpAwL-m123CcCFFR_OqoT6zaIfeJR7W-idDlVpiT1AztFWagixNIAt-YcYOsKW55N16mk6axpQspMZ_k_XrFWTFtHbA1h1zjUaUH8EaB_GMI7zdcaS-UuoZfn5aX9PTF');
+              // sendIds.push('APA91bGdU3pfYOOt_0gPkUMVROu-IH96FkFIRmcjQSX8gk1Bau1cYAF-dSpumDqQa7LgbS6h4X_NPtXP966C3cIxnwlMVsMO61c66T9cSZKttzNcAcgswszZXodhHc_Yy6x3M8DL6KqD');
+              // sendIds.push('APA91bHAvlVM5M0OSvX3yL-IxAyMbIDB_Zuck0QRpMFwHhH6XbjS3Kh0fS51EbFjlbQqQiL-gBssyP4C45HTEre72u_Tvudgfg3Wd0vYA3UC7g58cNWjto0MzgHw8UGtRYri0bPfJxnV');
+              // sendIds.push('APA91bGkE23mnwtvDWr4wke3J0FkFjM9LOHzj6l6zOfyw7BOUWgo8wFeHeaV2gqR5ftQ-5rtK6K4KsEBrrGdJyX4mMzKc69zUCtWsVQSgTWpwWBUimuLc9Wrh9Jl7VL5IO2DWszCwpOw');
+              // sendIds.push('APA91bFNCfrLVJ4zPw6QUl-vgwDh7g7WFngkRlhTvOwdyyeyQRHsV24OEeip-3qmYNmUwuKfdtuE63Xh_8aSB2h5ykc1ztk5Ep3Kh-j6FRV-QZuFRdRBE-fSmm_SMmeKOCi8xqIkV180');
+              // console.log("배열 첫 번째 값 : "+sendIds[0]);
+              // console.log("배열 마지막 값 : "+sendIds[sendIds.length-1]);
+              console.log(sendIds);
+              console.log(sendIds.length);
+              console.log("\n");
+              //console.log("1회에 발송될 갯수 : "+sendIds.length);
+
+              sender.send(message, sendIds, 4, function (error, result){
+                if(error==null){
+                  console.log(result);  
+                }else{
+                  console.log(error);
+                }
+              });
+            }
             res.status(200).json({"min" : (next_min+1)});
         });  
 
