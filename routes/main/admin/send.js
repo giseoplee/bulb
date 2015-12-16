@@ -23,7 +23,7 @@ router.get('/', function(req, res, next) {
         res.status(503).json(error);
       }
     });
-    console.log(query);
+    //console.log(query);
   }
 });
 

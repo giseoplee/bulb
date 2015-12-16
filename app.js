@@ -15,6 +15,8 @@ var ready_push = require('./routes/main/admin/readyPush');
 var notificationEdit = require('./routes/main/admin/notificationEdit');
 var notificationSend = require('./routes/main/admin/notificationSend');
 var notifySend = require('./routes/main/admin/notifySend');
+var test = require('./routes/main/admin/test');
+var test1 = require('./routes/main/admin/test1');
 //var push_test = require('./routes/main/admin/push_test');
 
 var app = express();
@@ -47,6 +49,8 @@ app.use('/main/admin/readyPush', ready_push);
 app.use('/main/admin/notificationEdit', notificationEdit);
 app.use('/main/admin/notificationSend', notificationSend);
 app.use('/main/admin/notifySend', notifySend);
+app.use('/main/admin/test', test);
+app.use('/main/admin/test1', test1);
 
 //app.use('/main/admin/push_test', push_test);
 //app.use('/main/admin/push_test', admin_push);

@@ -187,24 +187,100 @@ $(".notification_change").live("click", function(){
 
 });
 
+// $(".notification_send").live("click",function(){
+
+//   var send_confirm = confirm("Really?");
+
+//   if(send_confirm==true){
+//     var no = $(this).parents("tr").attr('send-no');
+//     $.ajax({
+//       type : "POST",
+//       url : "/main/admin/notifySend",
+//       data : "no="+no,
+//       success : function(data){
+//         if(data.message=="send_all_complete"){
+//           alert("Complete.");
+//         }
+//       }
+//     });  
+//   }
+// });
+
+
 $(".notification_send").live("click",function(){
 
   var send_confirm = confirm("Really?");
+  var count = 0;
 
   if(send_confirm==true){
+
     var no = $(this).parents("tr").attr('send-no');
+
     $.ajax({
       type : "POST",
-      url : "/main/admin/notifySend",
+      url : "/main/admin/test",
       data : "no="+no,
+      dataType : "JSON",
       success : function(data){
-        if(data.message=="send_all_complete"){
-          alert("Complete.");
-        }
+        // console.log(data.slice); // 100000
+        // console.log(data.count); // 1403343
+        // console.log(data.devided); // 14
+        // console.log(data.remainder); // 3343 
+        request(count, (data.slice), no, data.last_id);
+
+        // if(count < data.count){
+        //   request(count, data.slice, no);
+        // }else{
+        //   request(count, data.remainder, no);
+        // }
+        //console.log(checked);
+        // if(data.message=="send_all_complete"){
+        //   alert("Complete.");
+        // }
       }
     });  
   }
 });
+
+function request(min, limit, app, count){
+
+  
+
+  console.log("id 시작 지점 : "+min);
+  console.log("id 마지막 지점 : "+(min+limit));
+  console.log("appication_id : "+app);
+  console.log("last_id : "+count);
+  console.log("\n");
+  //console.log(count);
+
+  $.ajax({
+    type : "POST",
+    url : "/main/admin/test1",
+    data : "min="+min+"&limit="+limit+"&app="+app,
+    dataType : "JSON",
+    success : function(data){
+      checiking(data.min, limit, app, count);
+    }
+  });
+
+  //min+=(limit);
+  //count++;
+  //return min;
+ 
+  //checiking(min, limit, app, count);  
+}
+
+function checiking(min, limit, app, count){
+
+  //min-=1;
+  
+  if(min < count){
+    request(min, limit, app, count);
+  }else{
+    alert("complete");
+  }
+}
+
 </script>
 
 
