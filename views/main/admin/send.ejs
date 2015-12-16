@@ -210,7 +210,7 @@ $(".notification_change").live("click", function(){
 $(".notification_send").live("click",function(){
 
   var send_confirm = confirm("Really?");
-  var count = 0;
+  var count = 300000;
 
   if(send_confirm==true){
 
@@ -226,8 +226,8 @@ $(".notification_send").live("click",function(){
         // console.log(data.count); // 1403343
         // console.log(data.devided); // 14
         // console.log(data.remainder); // 3343 
-        request(count, (data.slice), no, data.last_id);
-
+        //request(count, (data.slice), no, data.last_id);
+        console.log(count);
         // if(count < data.count){
         //   request(count, data.slice, no);
         // }else{
