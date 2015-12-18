@@ -102,15 +102,15 @@ router.post('/', function(req, res, next) {
               // console.log("\n");
               //console.log("1회에 발송될 갯수 : "+sendIds.length);
 
-              // sender.send(message, sendIds, 4, function (error, result){
-              //   if(error==null){
-              //     console.log("멀티캐스트 ID : "+result.multicast_id);
-              //     console.log("성공한 발송 : "+result.success);
-              //     console.log("실패한 발송 : "+result.failure);
-              //   }else{
-              //     console.log(error);
-              //   }
-              // });
+              sender.send(message, sendIds, 4, function (error, result){
+                if(error==null){
+                  console.log("멀티캐스트 ID : "+result.multicast_id);
+                  console.log("성공한 발송 : "+result.success);
+                  console.log("실패한 발송 : "+result.failure);
+                }else{
+                  console.log(error);
+                }
+              });
             }
             // 
             sleep(4000);
