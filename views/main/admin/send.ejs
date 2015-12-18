@@ -37,7 +37,7 @@
           <th style="width:260px;">Link</th>
           <th style="width:60px;">Arg1</th>
           <th style="width:60px;">Arg2</th>
-          <th style="width:55px;"></th>
+          <th style="width:95px;"></th>
         </tr>
       </thead>
        <tbody>
@@ -68,9 +68,11 @@
             </td>
             <td>
               <%if(!rows[i].description){%>
-              <span><textarea class="notification_description" name="description"></textarea> </span>
+              <span class="desc"><textarea class="notification_description" name="description"></textarea> </span>
+              <span class="tick"><b>Ticker</b> : <input style="width:344px;" class="ticker" name="ticker" /></span>
                <%}else{%>
-              <span><%= rows[i].description %></span>
+              <span><%= rows[i].description %></span><br />
+              <span><b>( Ticker</b> : <%=rows[i].ticker%><b> )</b></span>
               <%}%>
             </td>
             <td>
@@ -101,6 +103,7 @@
               <i class="fa fa-pencil button alterar notification_edit"></i>
               <%}%>
               <i class="fa fa-plane button alterar notification_send"></i>
+              <i class="fa fa-trash button alterar notification_delete"></i>
             </td>
         </tr>
         <% } %>
@@ -120,7 +123,8 @@ $(".notification_edit").live("click", function(){
         var header_width = $('#header').width();
         var no = $(this).parents("tr").attr('send-no');
         var title = $(this).parents("tr").children('td:eq(5)').children('span').children('.notification_title').val();
-        var description = $(this).parents("tr").children('td:eq(6)').children('span').children('.notification_description').val();
+        var description = $(this).parents("tr").children('td:eq(6)').children('span.desc').children('.notification_description').val();
+        var ticker = $(this).parents("tr").children('td:eq(6)').children('span.tick').children('.ticker').val();
         var url = $(this).parents("tr").children('td:eq(7)').children('span').children('.url').val();
         var param1 = $(this).parents("tr").children('td:eq(8)').children('span').children('.param1').val();
         var param2 = $(this).parents("tr").children('td:eq(9)').children('span').children('.param2').val();
@@ -128,6 +132,8 @@ $(".notification_edit").live("click", function(){
         if(title.length > 255){
           alert("제목이 255자가 넘어갑니다. 텍스트 길이를 줄여주세요.");
         }else if(description.length > 255){
+          alert("내용이 255자가 넘어갑니다. 텍스트 길이를 줄여주세요.");
+        }else if(ticker.length > 255){
           alert("내용이 255자가 넘어갑니다. 텍스트 길이를 줄여주세요.");
         }else if(url.length > 50){
           alert("인자1의 내용이 50자가 넘어갑니다. 텍스트 길이를 줄여주세요.");
@@ -139,7 +145,7 @@ $(".notification_edit").live("click", function(){
           $.ajax({
             type : "POST",
             url : "/main/admin/notificationEdit",
-            data : "no="+no+"&title="+title+"&description="+description+"&url="+url+"&param1="+param1+"&param2="+param2,
+            data : "no="+no+"&title="+title+"&description="+description+"&ticker="+ticker+"&url="+url+"&param1="+param1+"&param2="+param2,
             success : function(data){
               if(data.message=="success"){
                 alert("Good.");
@@ -159,32 +165,75 @@ $(".notification_edit").live("click", function(){
 
 $(".notification_change").live("click", function(){
 
-  var title = $(this).parents("tr").children('td:eq(4)').children('span').html();
-  var description = $(this).parents("tr").children('td:eq(5)').children('span').html();
-  var url = $(this).parents("tr").children('td:eq(6)').children('span').html();
-  var param1 = $(this).parents("tr").children('td:eq(7)').children('span').html();
-  var param2 = $(this).parents("tr").children('td:eq(8)').children('span').html();
+  var title = $(this).parents("tr").children('td:eq(5)').children('span').html();
+  var description = $(this).parents("tr").children('td:eq(6)').children('span:eq(0)').html();
+  var ticker = $(this).parents("tr").children('td:eq(6)').children('span:eq(1)').html();
+  var url = $(this).parents("tr").children('td:eq(7)').children('span').html();
+  var param1 = $(this).parents("tr").children('td:eq(8)').children('span').html();
+  var param2 = $(this).parents("tr").children('td:eq(9)').children('span').html();
 
   $(this).parents("tr").children('td:eq(5)').children('span').html("");
-  $(this).parents("tr").children('td:eq(6)').children('span').html("");
+  //$(this).parents("tr").children('td:eq(6)').children('span').html("");
+  $(this).parents("tr").children('td:eq(6)').children('span:eq(0)').html("");
+  $(this).parents("tr").children('td:eq(6)').children('span:eq(1)').html("");
   $(this).parents("tr").children('td:eq(7)').children('span').html("");
   $(this).parents("tr").children('td:eq(8)').children('span').html("");
   $(this).parents("tr").children('td:eq(9)').children('span').html("");
 
   var title_textarea = "<textarea class=\"notification_title\" name=\"title\"></textarea>";
   var description_textarea = "<textarea class=\"notification_description\" name=\"description\"></textarea>";
+  var ticker_input = "<b>Ticker</b> : <input style=\"width:344px;\" class=\"ticker\" name=\"ticker\" />";
   var url_input = "<input class=\"url\" name=\"url\" />";
   var param1_input = "<input class=\"param1\" name=\"param1\" />";
   var param2_input= "<input class=\"param2\" name=\"param2\" />";
 
   $(this).parents("tr").children('td:eq(5)').children('span').prepend(title_textarea);
-  $(this).parents("tr").children('td:eq(6)').children('span').prepend(description_textarea);
+  $(this).parents("tr").children('td:eq(6)').children('span:eq(0)').prepend(description_textarea);
+  $(this).parents("tr").children('td:eq(6)').children('span:eq(0)').addClass('desc');
+  $(this).parents("tr").children('td:eq(6)').children('span:eq(1)').prepend(ticker_input);
+  $(this).parents("tr").children('td:eq(6)').children('span:eq(1)').addClass('tick');
   $(this).parents("tr").children('td:eq(7)').children('span').prepend(url_input);
   $(this).parents("tr").children('td:eq(8)').children('span').prepend(param1_input);
   $(this).parents("tr").children('td:eq(9)').children('span').prepend(param2_input);
   $(this).closest('.notification_change').addClass('notification_edit');
   $(this).closest('.notification_change').removeClass('notification_change');
 
+  $(".notification_title").val(title);
+  $(".notification_description").val(description);
+  //$(".ticker").val(ticker);
+  $(".url").val(url);
+  $(".param1").val(param1);
+  $(".param2").val(param2);
+
+});
+
+$(".notification_delete").live("click", function(){
+
+      var edit_confirm = confirm("Delete?");
+      var header_width = $('#header').width();
+      
+        if(edit_confirm==true){
+          var no = $(this).parents("tr").attr('send-no');
+          console.log(no);
+          $.ajax({
+            type : "POST",
+            url : "/main/admin/notificationEdit/delete",
+            data : "no="+no,
+            dataType : "JSON",
+            success : function(data){
+              if(data.message=="success"){
+                alert("삭제 완료");
+                $('#content').hide().load("main/admin/send", function(){
+                  $('#content').show();
+                  $('#content').height('100%');
+                  $('#content').width((header_width-232));
+                });  
+              }else{
+                alert("삭제 실패");
+              }
+            }
+          });
+        }
 });
 
 // $(".notification_send").live("click",function(){
@@ -210,7 +259,7 @@ $(".notification_change").live("click", function(){
 $(".notification_send").live("click",function(){
 
   var send_confirm = confirm("Really?");
-  var count = 300000;
+  var count = 0;
 
   if(send_confirm==true){
 
@@ -227,16 +276,6 @@ $(".notification_send").live("click",function(){
         // console.log(data.devided); // 14
         // console.log(data.remainder); // 3343 
         request(count, (data.slice), no, data.last_id);
-        //console.log(count);
-        // if(count < data.count){
-        //   request(count, data.slice, no);
-        // }else{
-        //   request(count, data.remainder, no);
-        // }
-        //console.log(checked);
-        // if(data.message=="send_all_complete"){
-        //   alert("Complete.");
-        // }
       }
     });  
   }
@@ -244,14 +283,11 @@ $(".notification_send").live("click",function(){
 
 function request(min, limit, app, count){
 
-  
-
   console.log("id 시작 지점 : "+min);
   console.log("id 마지막 지점 : "+(min+limit));
   console.log("appication_id : "+app);
   console.log("last_id : "+count);
   console.log("\n");
-  //console.log(count);
 
   $.ajax({
     type : "POST",
@@ -262,17 +298,9 @@ function request(min, limit, app, count){
       checiking(data.min, limit, app, count);
     }
   });
-
-  //min+=(limit);
-  //count++;
-  //return min;
- 
-  //checiking(min, limit, app, count);  
 }
 
 function checiking(min, limit, app, count){
-
-  //min-=1;
   
   if(min < count){
     request(min, limit, app, count);

@@ -29,9 +29,9 @@ router.post('/', function(req, res, next) {
 		res.render('index', context); 
 	}else{
 		console.log(insert_date);
-	 	var query = "update notifications set title=?, description=?, url=?, param1=?, param2=?, updated_at=? where id=?;";
+	 	var query = "update notifications set title=?, description=?, ticker=?, url=?, param1=?, param2=?, updated_at=? where id=?;";
 	 	var test = connection.query(query, 
-	 		[req.body.title, req.body.description, req.body.url, req.body.param1, req.body.param2, insert_date, req.body.no],
+	 		[req.body.title, req.body.description, req.body.ticker, req.body.url, req.body.param1, req.body.param2, insert_date, req.body.no],
 	 			function(error, cursor){
 		 			if(error==null){
 		 				res.status(200).json({"message" : "success"});
@@ -39,6 +39,27 @@ router.post('/', function(req, res, next) {
 		 				res.status(200).json({"message" : "edit_fail"});
 		 			}
 	 	});console.log(test);
+	}
+});
+
+router.post('/delete', function(req, res, next) {
+
+	//res.status(200).json({"result":"delete from notifications where id="+req.body.no+";"});
+
+	var context = {};
+	context.title = "Login";
+
+	if(req.session.key == undefined){
+		req.session.authorized = false;
+		res.render('index', context); 
+	}else{
+		connection.query("delete from notifications where id=?",[req.body.no], function(error, cursor){
+			if(error==null){
+				res.status(200).json({"message" : "success"});
+			}else{
+				res.status(200).json({"message" : "fail"});
+			}
+		});
 	}
 });
 

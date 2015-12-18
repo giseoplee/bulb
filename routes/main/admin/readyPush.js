@@ -31,7 +31,7 @@ router.post('/', function(req, res, next) {
       res.status(200).json({"message" : "auth_fail"});
     }else{
       if(req.body.image_flag=="default"){
-        image_flag = 0;
+        image_flag = 4;
       }
       else if(req.body.image_flag=="app_icon"){
         image_flag = 1;

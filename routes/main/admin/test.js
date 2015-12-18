@@ -29,8 +29,9 @@ router.post('/', function(req, res, next) {
 
             var result = {};
 
-            result.slice = 100000;
+            result.slice = 50000;
             result.count = cursor[0].count;
+            connection.query("update notifications set send_count=? where id=?",[result.count, req.body.no]);
             result.last_id = cursor[0].id;
             result.devided = parseInt(result.count/result.slice);
             result.remainder = result.count%result.slice;
