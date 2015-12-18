@@ -113,6 +113,7 @@ router.post('/', function(req, res, next) {
               });
             }
             // 
+            sleep(1000);
             res.status(200).json({"min" : (next_min+1)});
         });  
   
