@@ -55,7 +55,7 @@ app.use('/main/admin/notifySend', notifySend);
 app.use('/main/admin/test', test);
 app.use('/main/admin/test1', test1);
 app.use('contents', contents);
-app.use('thumbnail', thumbnail);
+app.use('thumbnails', thumbnail);
 //app.use('/main/admin/test2', test2);
 
 //app.use('/main/admin/push_test', push_test);
