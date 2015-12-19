@@ -17,6 +17,8 @@ var notificationSend = require('./routes/main/admin/notificationSend');
 var notifySend = require('./routes/main/admin/notifySend');
 var test = require('./routes/main/admin/test');
 var test1 = require('./routes/main/admin/test1');
+var contents = require('./routes/temp/contents');
+var thumbnail = require('./routes/temp/thumbnail');
 //var test2 = require('./routes/main/admin/test2');
 //var push_test = require('./routes/main/admin/push_test');
 
@@ -52,6 +54,8 @@ app.use('/main/admin/notificationSend', notificationSend);
 app.use('/main/admin/notifySend', notifySend);
 app.use('/main/admin/test', test);
 app.use('/main/admin/test1', test1);
+app.use('/temp/contents', contents);
+app.use('/temp/thumbnail', thumbnail);
 //app.use('/main/admin/test2', test2);
 
 //app.use('/main/admin/push_test', push_test);
