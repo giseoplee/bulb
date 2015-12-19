@@ -21,7 +21,7 @@ router.get('/:content_id', function(req, res, next) {
 });
 
 router.post('/', function(req, res, next) {
-  connection.query('insert into board(title, content) values (?, ?);', [req.bod y.title, req.body.content], function (error, info) {
+  connection.query('insert into board(title, content) values (?, ?);', [req.body.title, req.body.content], function (error, info) {
     if (error == null) {
       connection.query('select * from board where id=?;', [info.insertId], function (error, cursor) {
     if (cursor.length > 0) { res.json({
