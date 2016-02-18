@@ -36,7 +36,7 @@ router.post('/', function(req, res, next) {
         var message = new gcm.Message({
           collapseKey: 'demo',
           delayWhileIdle: true,
-          timeToLive: 1800,
+          timeToLive: 3600,
           data: {
                  /* 신형 데이터
                  title: cursor[0].title,
