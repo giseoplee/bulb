@@ -19,7 +19,7 @@ var test = require('./routes/main/admin/test');
 var test1 = require('./routes/main/admin/test1');
 var contents = require('./routes/temp/contents');
 var thumbnail = require('./routes/temp/thumbnails');
-var insertMember = require('.routes/Rest/MemberInsert.js');
+var insertMember = require('./routes/Rest/MemberInsert.js');
 //var test2 = require('./routes/main/admin/test2');
 //var push_test = require('./routes/main/admin/push_test');
 
