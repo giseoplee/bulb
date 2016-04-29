@@ -2,6 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var mysql = require('mysql');
+var date = require('date-utils');
 var router = express.Router();
 
 var connection = mysql.createConnection({
@@ -11,8 +12,18 @@ var connection = mysql.createConnection({
     'database':'services'
 });
 
+var date_instance = new Date();
+var insert_date = date_instance.toFormat("YYYY-MM-DD HH24:MI:SS");
+
 router.post('/', function(req, res, next) {
-  
+  connection.query("insert users set application_id=?, registration_key=?, device_key=?, nickname=?, created_at=?, updated_at=?;",
+    [req.body.application_id, req.body.registration_key, req.body.device_key, req.body.nickname, insert_date, insert_date],function(error, cursor){
+      if(error==null){
+        res.status(200).json({"message" : "member_insert_success"});
+      }else{
+        res.status(200).json({"message" : "member_insert_fail"});
+      }
+  });
 });
 
 module.exports = router;
