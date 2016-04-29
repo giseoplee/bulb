@@ -21,7 +21,7 @@ router.post('/', function(req, res, next) {
       if(error==null){
         res.status(200).json({"message" : "member_insert_success"});
       }else{
-        console.log(query);
+        console.log(query.sql);
         res.status(200).json({"message" : "member_insert_fail"});
       }
   });
