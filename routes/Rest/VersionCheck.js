@@ -17,6 +17,7 @@ var connection = mysql.createConnection({
 
 router.get('/:application_id', function(req, res, next) {
 
+  console.log("console test");
   console.log(req.params.application_id);
 
   var query = connection.query("select id,name,version from applcations where application_id=?;",
