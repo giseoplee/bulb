@@ -19,7 +19,7 @@ router.post('/', function(req, res, next) {
 
   console.log(req.body);
 
-  connection.query("")
+  //connection.query("")
 
   var query = connection.query("insert users set application_id=?, registration_key=?, device_key=?, nickname=?, created_at=?, updated_at=?;",
     [req.body.application_id, req.body.registration_key, req.body.device_key, req.body.nickname, insert_date, insert_date],function(error, cursor){
