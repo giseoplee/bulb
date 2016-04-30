@@ -19,17 +19,31 @@ router.post('/', function(req, res, next) {
 
   console.log(req.body);
 
-  //connection.query("")
-
-  var query = connection.query("insert users set application_id=?, registration_key=?, device_key=?, nickname=?, created_at=?, updated_at=?;",
-    [req.body.application_id, req.body.registration_key, req.body.device_key, req.body.nickname, insert_date, insert_date],function(error, cursor){
-      if(error==null){
-        res.status(200).json({"message" : "member_insert_success"});
-      }else{
-        console.log(query.sql);
-        res.status(200).json({"message" : "member_insert_fail"});
-      }
+  var query_s = connection.query("select id from users where application_id=? and registration_key=?",[req.body.application_id, req.body.registration_key], function(error, cursor){
+    if(cursor.length > 0){
+      res.status(200).json({"message" : "exist_token"});
+    }else{
+        var query_i = connection.query("insert users set application_id=?, registration_key=?, device_key=?, nickname=?, created_at=?, updated_at=?;",
+        [req.body.application_id, req.body.registration_key, req.body.device_key, req.body.nickname, insert_date, insert_date],function(error, cursor){
+          if(error==null){
+            res.status(200).json({"message" : "member_insert_success"});
+          }else{
+            console.log(query.sql);
+            res.status(200).json({"message" : "member_insert_fail"});
+          }
+      });
+    }
   });
+
+  // var query_i = connection.query("insert users set application_id=?, registration_key=?, device_key=?, nickname=?, created_at=?, updated_at=?;",
+  //   [req.body.application_id, req.body.registration_key, req.body.device_key, req.body.nickname, insert_date, insert_date],function(error, cursor){
+  //     if(error==null){
+  //       res.status(200).json({"message" : "member_insert_success"});
+  //     }else{
+  //       console.log(query.sql);
+  //       res.status(200).json({"message" : "member_insert_fail"});
+  //     }
+  // });
 });
 
 module.exports = router;
