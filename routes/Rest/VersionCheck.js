@@ -17,10 +17,7 @@ var connection = mysql.createConnection({
 
 router.get('/:application_id', function(req, res, next) {
 
-  console.log("console test");
-  console.log(req.params.application_id);
-
-  var query = connection.query("select id,name,version from applcations where application_id=?;",
+  var query = connection.query("select id,name,version from applications where application_id=?;",
     [req.params.application_id],function(error, cursor){
       if(error==null){
         res.status(200).json({"version" : cursor[0].version, "message" : "success"});
