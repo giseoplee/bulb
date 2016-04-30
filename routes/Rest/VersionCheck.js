@@ -12,13 +12,13 @@ var connection = mysql.createConnection({
     'database':'services'
 });
 
-var date_instance = new Date();
-var insert_date = date_instance.toFormat("YYYY-MM-DD HH24:MI:SS");
+// var date_instance = new Date();
+// var insert_date = date_instance.toFormat("YYYY-MM-DD HH24:MI:SS");
 
-router.get('/', function(req, res, next) {
+router.get('/:application_id', function(req, res, next) {
 
   var query = connection.query("select id,name,version from applcations where application_id=?;",
-    [req.body.application_id],function(error, cursor){
+    [req.params.application_id],function(error, cursor){
       if(error==null){
         res.status(200).json({"version" : cursor[0].version, "message" : "success"});
       }else{
