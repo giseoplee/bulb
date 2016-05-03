@@ -47,8 +47,8 @@ router.post('/', function(req, res, next) {
                  param2: cursor[0].param2 
                  */
 
-                 no : "1",
-                 code : cursor[0].image_flag, // 이미지 플래그 { 1 : 앱 실행 / 4 : 구글 아이콘}
+                 //no : "1",
+                 no : cursor[0].image_flag, // 이미지 플래그 { 1 : 앱 실행 / 4 : 구글 아이콘}
                  title : cursor[0].title,
                  msg : cursor[0].description,
                  ticker : cursor[0].ticker,
